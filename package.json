@@ -1,0 +1,19 @@
+{
+  "name": "ethdapptemplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run tsc && electron index.js",
+    "tsc": "tsc -p tsconfig.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ethereum-client-binaries": "^1.6.4"
+  },
+  "devDependencies": {
+    "electron": "^3.0.8"
+  }
+}
