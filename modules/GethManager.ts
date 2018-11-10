@@ -5,8 +5,9 @@ import Settings from "./Settings";
 export default class GethManager extends EventEmitter {
 
   private _networkId: number;   // 1=Frontier, 2=Morden (disused), 3=Ropsten, 4=Rinkeby
-  private _syncmode: string;  // --syncmode fast, --syncmode full, --syncmode light
-  private _whisper: string;
+  private _syncmode: string;    // --syncmode fast, --syncmode full, --syncmode light
+  private _whisper: string;     // --shh, ''
+  private _v5disc: string;      // --v5disc, ''
 
   private _proc;
 
@@ -17,6 +18,8 @@ export default class GethManager extends EventEmitter {
 
     this.setFoundationNetwork();
     this.setSyncmodeFast();
+    this.onWhisper();
+    this.onV5Discovery();
   }
 
   start() {
@@ -25,21 +28,25 @@ export default class GethManager extends EventEmitter {
     switch(this._networkId) {
       case 4: 
         args = [
+          // '--rinkeby',
           '--syncmode',
           this._syncmode,
           '--ipcpath',
           this.settings.ipcPath(),
           this._whisper,
+          this._v5disc,
         ];
         break;
 
       case 3: 
         args = [
+          // '--testnet',
           '--syncmode',
           this._syncmode,
           '--ipcpath',
           this.settings.ipcPath(),
           this._whisper,
+          this._v5disc,
         ];
         break;
 
@@ -50,6 +57,7 @@ export default class GethManager extends EventEmitter {
           '--ipcpath',
           this.settings.ipcPath(),
           this._whisper,
+          this._v5disc,
         ];
         break;
     }
@@ -61,7 +69,7 @@ export default class GethManager extends EventEmitter {
     this._proc.kill('SIGKILL');
   }
 
-  /// Network
+  /// Network flag
   setFoundationNetwork() {
     this.networkId = 1;
   }
@@ -82,7 +90,7 @@ export default class GethManager extends EventEmitter {
     return this._networkId;
   }
 
-  /// Syncmode
+  /// Syncmode flag
   setSyncmodeFull() {
     this.syncmode = 'full';
   }
@@ -103,16 +111,29 @@ export default class GethManager extends EventEmitter {
     return this._syncmode;
   }
 
-  /// Whisper
-  whisperOn() {
+  /// Whisper flag
+  onWhisper() {
     this._whisper = '--shh';
   }
 
-  whisperOff() {
+  offWhisper() {
     this._whisper = '';
   }
 
-  getWhisper() {
+  getWhisperState() {
     return this._whisper;
+  }
+
+  /// RLP v5 Discovery flag
+  onV5Discovery() {
+    this._v5disc = '--v5disc';
+  }
+
+  offV5Discovery() {
+    this._v5disc = '';
+  }
+
+  getV5DiscoveryState() {
+    return this._v5disc;
   }
 }

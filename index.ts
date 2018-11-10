@@ -12,8 +12,13 @@ let gethNode
 
 app.on('ready', async () => {
   settingManager = new Settings();
+
+  // Client Binary Download, Download Check
   binaryManager = new ClientBinaryManager(path.join(__dirname, 'clientBinaries.json'), settingManager);
-  await binaryManager.NodeDownload();
+  await binaryManager.ManagerInit();
+  if (!binaryManager.isDownloaded()) {
+    await binaryManager.NodeDownload();
+  }
 
   gethNode = new GethManager(binaryManager.getBinaryPath(), settingManager);
   gethNode.setSyncmodeLight();
