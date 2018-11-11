@@ -28,7 +28,7 @@ export default class GethManager extends EventEmitter {
     switch(this._networkId) {
       case 4: 
         args = [
-          // '--rinkeby',
+          '--rinkeby',
           '--syncmode',
           this._syncmode,
           '--ipcpath',
@@ -40,7 +40,7 @@ export default class GethManager extends EventEmitter {
 
       case 3: 
         args = [
-          // '--testnet',
+          '--testnet',
           '--syncmode',
           this._syncmode,
           '--ipcpath',
