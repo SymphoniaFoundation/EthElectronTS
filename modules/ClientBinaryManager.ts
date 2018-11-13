@@ -57,7 +57,7 @@ export default class ClientBinaryManager extends EventEmitter {
 
     await this.manager.init({
       folders: [
-        path.join(app.getPath('userData'), 'binaries', 'Geth', 'unpacked')
+        path.join(this._settings.userDataPath, 'binaries', 'Geth', 'unpacked')
       ]
     });
 
@@ -73,7 +73,7 @@ export default class ClientBinaryManager extends EventEmitter {
 
   public async NodeDownload() {
     const result = await this.manager.download(this.manager.clients.Geth.id, {
-      downloadFolder: path.join(app.getPath('userData'), 'binaries'),
+      downloadFolder: path.join(this._settings.userDataPath, 'binaries'),
       urlRegex: this.ALLOWED_DOWNLOAD_URLS_REGEX,
     });
   }

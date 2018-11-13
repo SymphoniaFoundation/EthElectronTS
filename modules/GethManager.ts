@@ -8,6 +8,7 @@ export default class GethManager extends EventEmitter {
   private _syncmode: string;    // --syncmode fast, --syncmode full, --syncmode light
   private _whisper: string;     // --shh, ''
   private _v5disc: string;      // --v5disc, ''
+  private _cacheValue: number;  // --cache 1024, default
 
   private _proc;
 
@@ -20,8 +21,10 @@ export default class GethManager extends EventEmitter {
     this.setSyncmodeFast();
     this.onWhisper();
     this.onV5Discovery();
+    this._cacheValue = 1024;
   }
 
+  // return promise
   start() {
     let args: Array<string>;
 
@@ -35,6 +38,8 @@ export default class GethManager extends EventEmitter {
           this.settings.ipcPath(),
           this._whisper,
           this._v5disc,
+          '--cache',
+          this._cacheValue.toString(),
         ];
         break;
 
@@ -47,6 +52,8 @@ export default class GethManager extends EventEmitter {
           this.settings.ipcPath(),
           this._whisper,
           this._v5disc,
+          '--cache',
+          this._cacheValue.toString(),
         ];
         break;
 
@@ -58,6 +65,8 @@ export default class GethManager extends EventEmitter {
           this.settings.ipcPath(),
           this._whisper,
           this._v5disc,
+          '--cache',
+          this._cacheValue.toString(),
         ];
         break;
     }
@@ -65,6 +74,7 @@ export default class GethManager extends EventEmitter {
     this._proc = spawn(this.binPath, args);
   }
 
+  // return promise
   stop() {
     this._proc.kill('SIGKILL');
   }
@@ -133,7 +143,16 @@ export default class GethManager extends EventEmitter {
     this._v5disc = '';
   }
 
-  getV5DiscoveryState() {
+  get V5DiscoveryState() {
     return this._v5disc;
+  }
+
+  /// cache
+  set cacheVelue(_value: number) {
+    this._cacheValue = _value;
+  }
+
+  get cacheValue(): number {
+    return this._cacheValue;
   }
 }
